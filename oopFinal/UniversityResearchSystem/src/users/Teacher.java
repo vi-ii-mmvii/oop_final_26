@@ -57,4 +57,21 @@ public class Teacher extends Employee {
                 ", position=" + position +
                 '}';
     }
+        private List<ResearchPaper> papers = new ArrayList<>();
+
+    @Override
+    public void publishPaper(ResearchPaper p) { papers.add(p); p.addAuthor(this); }
+    
+    @Override
+    public List<ResearchPaper> getResearchPapers() { return papers; }
+    
+    @Override
+    public int calculateHIndex() {
+        List<Integer> cits = new ArrayList<>();
+        for(ResearchPaper p : papers) cits.add(p.getCitations());
+        cits.sort(Collections.reverseOrder());
+        int h = 0;
+        for(int i=0; i<cits.size(); i++) if(cits.get(i) >= i+1) h = i+1;
+        return h;
+    }
 }
