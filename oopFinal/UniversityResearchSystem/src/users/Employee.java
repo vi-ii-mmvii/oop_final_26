@@ -1,5 +1,7 @@
 package users;
 
+import system.Message;
+
 public abstract class Employee extends User {
     protected double salary;
     protected int yearsOfService;
@@ -8,6 +10,10 @@ public abstract class Employee extends User {
         super(id, name, email);
         this.salary = salary;
         this.yearsOfService = yearsOfService;
+    }
+
+    public Message sendMessage(Employee receiver, String title, String content) {
+        return new Message(this, receiver, title, content);
     }
 
     public double getSalary() {

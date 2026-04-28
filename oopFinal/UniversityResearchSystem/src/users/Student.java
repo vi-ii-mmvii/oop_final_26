@@ -2,13 +2,12 @@ package users;
 
 import academic.Course;
 import academic.Mark;
+import academic.Transcript;
 import exceptions.CreditLimitExceededException;
 import exceptions.TooManyFailsException;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class Student extends User {
     private static final int MAX_CREDITS = 21;
@@ -17,14 +16,14 @@ public class Student extends User {
     private String major;
     private int yearOfStudy;
     private List<Course> registeredCourses;
-    private Map<Course, Mark> transcript;
+    private Transcript transcript;
 
     public Student(String id, String name, String email, String major, int yearOfStudy) {
         super(id, name, email);
         this.major = major;
         this.yearOfStudy = yearOfStudy;
         this.registeredCourses = new ArrayList<>();
-        this.transcript = new HashMap<>();
+        this.transcript = new Transcript();
     }
 
     @Override
@@ -33,7 +32,7 @@ public class Student extends User {
     }
 
     public void registerCourse(Course course) throws CreditLimitExceededException, TooManyFailsException {
-        if (getFailedCoursesCount() >= MAX_FAILS) {
+        if (transcript.getFailedCoursesCount() >= MAX_FAILS) {
             throw new TooManyFailsException("Registration denied: student has 3 or more failed courses.");
         }
 
@@ -48,7 +47,7 @@ public class Student extends User {
     }
 
     public void addMark(Course course, Mark mark) {
-        transcript.put(course, mark);
+        transcript.addRecord(course, mark);
     }
 
     public int getCurrentCredits() {
@@ -60,27 +59,11 @@ public class Student extends User {
     }
 
     public int getFailedCoursesCount() {
-        int count = 0;
-        for (Mark mark : transcript.values()) {
-            if (!mark.isPassed()) {
-                count++;
-            }
-        }
-        return count;
+        return transcript.getFailedCoursesCount();
     }
 
-    public String getTranscript() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Transcript of ").append(name).append("\n");
-        for (Map.Entry<Course, Mark> entry : transcript.entrySet()) {
-            sb.append(entry.getKey().getCode())
-              .append(" - ")
-              .append(entry.getKey().getTitle())
-              .append(" : ")
-              .append(entry.getValue())
-              .append("\n");
-        }
-        return sb.toString();
+    public Transcript getTranscript() {
+        return transcript;
     }
 
     public String getMajor() {
@@ -105,6 +88,7 @@ public class Student extends User {
                 ", yearOfStudy=" + yearOfStudy +
                 ", currentCredits=" + getCurrentCredits() +
                 ", failedCourses=" + getFailedCoursesCount() +
+                ", gpa=" + String.format("%.2f", transcript.calculateGPA()) +
                 '}';
     }
 }
