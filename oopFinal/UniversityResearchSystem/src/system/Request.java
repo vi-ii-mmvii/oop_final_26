@@ -2,18 +2,21 @@ package system;
 
 import enums.RequestStatus;
 import users.Employee;
+import enums.UrgencyLevel;
 
 public class Request {
     private String title;
     private String description;
     private Employee author;
     private RequestStatus status;
+    private UrgencyLevel urgency;
 
-    public Request(String title, String description, Employee author) {
+    public Request(String title, String description, Employee author, UrgencyLevel urgency) {
         this.title = title;
         this.description = description;
         this.author = author;
         this.status = RequestStatus.NEW;
+        this.urgency = urgency;
     }
 
     public void markViewed() {

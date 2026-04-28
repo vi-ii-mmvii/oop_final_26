@@ -1,18 +1,27 @@
 package system;
 
 import users.Employee;
+import java.time.LocalDateTime;
 
 public class Message {
     private Employee sender;
     private Employee receiver;
     private String title;
     private String content;
+    private LocalDateTime publishedTime;
+    private boolean read;
 
     public Message(Employee sender, Employee receiver, String title, String content) {
         this.sender = sender;
         this.receiver = receiver;
         this.title = title;
         this.content = content;
+        this.publishedTime = LocalDateTime.now();
+        this.read = false;
+    }
+    
+    public void prochitano() {
+    	this.read = true;
     }
 
     public Employee getSender() {
@@ -30,6 +39,14 @@ public class Message {
     public String getContent() {
         return content;
     }
+    
+    public LocalDateTime getPublishedTime() {
+    	return publishedTime;
+    }
+    
+    public boolean isProchitano() {
+    	return read;
+    }
 
     @Override
     public String toString() {
@@ -38,6 +55,8 @@ public class Message {
                 ", receiver=" + receiver.getName() +
                 ", title='" + title + '\'' +
                 ", content='" + content + '\'' +
+                ", publishedTime=" + publishedTime +
+                ", prochitano = " + read + 
                 '}';
     }
 }
