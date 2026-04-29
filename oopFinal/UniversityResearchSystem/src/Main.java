@@ -33,7 +33,7 @@ public class Main {
         );
 
         Student student = new Student(
-                "S001", "Zhanna", "zhanna@kbtu.kz",
+                "S001", "wewewe", "wewewe@kbtu.kz",
                 "IT", 2
         );
 
